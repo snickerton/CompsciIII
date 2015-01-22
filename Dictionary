@@ -1,0 +1,56 @@
+import java.util.*;
+import java.io.*;
+
+
+
+
+public class Dictionary {
+	private static Map<String, List<String>> myData;	
+
+	Dictionary(){
+		myData = new HashMap<String, List<String>>();
+	}
+
+	public static int addDefinition(String word, String def){
+		if(myData.containsValue(word)){
+			myData.get(word).add(def);
+		}
+		else{
+			List<String> definitions = new ArrayList<String>();
+			definitions.add(def);
+			myData.put(word, definitions);
+		}
+		return myData.get(word).size();//gets the definitions array and then returns size
+
+	}
+	
+	public static String removeDefinition(String word, int index){
+		String temp = myData.get(word).get(index);
+		myData.get(word).remove(index);
+		return temp;
+	}
+	
+	public static List<String> removeWord(String word){
+		List<String> toBed = myData.get(word);
+		myData.remove(word);
+		return toBed;
+	}
+	
+	public String[] wordlist(){
+		String[] marc = (String[]) myData.values().toArray();//cast to ensure that the words returned are in string type 
+		Arrays.sort(marc);
+		return marc;
+	}
+	
+	public int load(String fn) throws IOException{
+		FileReader fr = new FileReader(fn);
+		BufferedReader reader = new BufferedReader(fr);
+		List<String> lines = new ArrayList<String>();
+		while(!reader.readLine().isEmpty()) {
+			lines.add(reader.readLine());
+		}
+		return lines.size();
+	}
+	
+	
+}
